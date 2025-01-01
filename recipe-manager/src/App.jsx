@@ -5,7 +5,6 @@ import RecipePage from "./pages/RecipePage";
 import CreateRecipePage from "./pages/CreateRecipePage";
 import ContactPage from "./pages/ContactPage"; // Import ContactPage
 import NavBar from "./components/NavBar";
-
 const App = () => {
   return (
     <Router>
