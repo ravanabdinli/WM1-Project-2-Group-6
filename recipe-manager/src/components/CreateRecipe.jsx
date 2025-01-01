@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-const CreateRecipe = () => {
+const CreateRecipe = ({ onRecipeAdded }) => {
   const [newRecipe, setNewRecipe] = useState({
     title: "",
     description: "",
@@ -10,8 +9,8 @@ const CreateRecipe = () => {
     steps: "",
     tags: "",
     difficulty: "Easy",
+    image: "", // Add image field
   });
-  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +20,7 @@ const CreateRecipe = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Convert ingredients, steps, and tags into arrays
+    // Format ingredients, steps, and tags
     const formattedRecipe = {
       ...newRecipe,
       ingredients: newRecipe.ingredients.split(",").map((item) => item.trim()),
@@ -30,10 +29,19 @@ const CreateRecipe = () => {
       lastUpdated: new Date().toISOString(),
     };
 
-    // POST new recipe to JSON Server
+    // POST new recipe to JSON server
     axios.post("http://localhost:3001/recipes", formattedRecipe).then((response) => {
       console.log("Recipe added:", response.data);
-      navigate(`/recipe/${response.data.id}`); // Redirect to the new recipe page
+      onRecipeAdded(response.data);
+      setNewRecipe({
+        title: "",
+        description: "",
+        ingredients: "",
+        steps: "",
+        tags: "",
+        difficulty: "Easy",
+        image: "", // Reset image field
+      });
     });
   };
 
@@ -65,7 +73,7 @@ const CreateRecipe = () => {
       />
       <textarea
         name="steps"
-        placeholder="Steps (separate by periods)"
+        placeholder="Steps (separated by periods)"
         value={newRecipe.steps}
         onChange={handleInputChange}
         required
@@ -82,6 +90,13 @@ const CreateRecipe = () => {
         <option value="Medium">Medium</option>
         <option value="Hard">Hard</option>
       </select>
+      <input
+        type="text"
+        name="image"
+        placeholder="Image URL"
+        value={newRecipe.image}
+        onChange={handleInputChange}
+      />
       <button type="submit">Add Recipe</button>
     </form>
   );

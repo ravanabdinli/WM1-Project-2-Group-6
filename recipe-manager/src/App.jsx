@@ -1,10 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import RecipesOverviewPage from "./pages/RecipesOverviewPage";
 import RecipePage from "./pages/RecipePage";
 import CreateRecipePage from "./pages/CreateRecipePage";
 import ContactPage from "./pages/ContactPage"; // Import ContactPage
 import NavBar from "./components/NavBar";
+
 const App = () => {
   return (
     <Router>
@@ -18,6 +20,7 @@ const App = () => {
         <div style={{ flex: 1, padding: "20px", overflowY: "auto" }}>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/recipes" element={<RecipesOverviewPage />} />
             <Route path="/recipe/:id" element={<RecipePage />} />
             <Route path="/create" element={<CreateRecipePage />} />
             <Route path="/contact" element={<ContactPage />} /> {/* Add Contact Route */}

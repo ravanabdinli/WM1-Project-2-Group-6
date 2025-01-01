@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import RecipesList from "../components/RecipesList";
 
-const HomePage = () => {
+const RecipesOverviewPage = () => {
   const [recipes, setRecipes] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterDifficulty, setFilterDifficulty] = useState("");
@@ -52,9 +52,9 @@ const HomePage = () => {
   const filteredRecipes = recipes
     .filter((recipe) => {
       const matchesSearch =
-        recipe.title.toLowerCase().includes(searchQuery) ||
-        recipe.description.toLowerCase().includes(searchQuery) ||
-        recipe.ingredients.some((ingredient) =>
+        recipe.title?.toLowerCase().includes(searchQuery) ||
+        recipe.description?.toLowerCase().includes(searchQuery) ||
+        recipe.ingredients?.some((ingredient) =>
           ingredient.toLowerCase().includes(searchQuery)
         );
 
@@ -63,7 +63,7 @@ const HomePage = () => {
 
       const matchesTags =
         !filterTags ||
-        recipe.tags.some((tag) => tag.toLowerCase().includes(filterTags));
+        recipe.tags?.some((tag) => tag.toLowerCase().includes(filterTags));
 
       return matchesSearch && matchesDifficulty && matchesTags;
     })

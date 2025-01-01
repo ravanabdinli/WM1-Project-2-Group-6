@@ -20,7 +20,7 @@ const RecipePage = () => {
   };
 
   const handleArrayInputChange = (e, field) => {
-    const value = e.target.value.split(",").map((item) => item.trim());
+    const value = e.target.value.split("\n").map((item) => item.trim());
     setRecipe((prevRecipe) => ({ ...prevRecipe, [field]: value }));
   };
 
@@ -30,10 +30,12 @@ const RecipePage = () => {
       lastUpdated: new Date().toISOString(),
     };
 
-    axios.put(`http://localhost:3001/recipes/${id}`, updatedRecipe).then((response) => {
-      setRecipe(response.data);
-      setIsEditing(false);
-    });
+    axios
+      .put(`http://localhost:3001/recipes/${id}`, updatedRecipe)
+      .then((response) => {
+        setRecipe(response.data);
+        setIsEditing(false);
+      });
   };
 
   const handleDelete = () => {
@@ -44,14 +46,17 @@ const RecipePage = () => {
 
   if (!recipe) return <p>Loading...</p>;
 
-  const formattedLastUpdated = new Date(recipe.lastUpdated).toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
+  const formattedLastUpdated = new Date(recipe.lastUpdated).toLocaleString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }
+  );
 
   return (
     <div
@@ -83,6 +88,16 @@ const RecipePage = () => {
             style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
           />
           <p>
+            <strong>Image URL: </strong>
+            <input
+              type="text"
+              name="image"
+              value={recipe.image || ""}
+              onChange={handleInputChange}
+              style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+            />
+          </p>
+          <p>
             <strong>Difficulty Level: </strong>
             <select
               name="difficulty"
@@ -98,7 +113,7 @@ const RecipePage = () => {
           <p>
             <strong>Ingredients: </strong>
             <textarea
-              value={recipe.ingredients.join(", ")}
+              value={recipe.ingredients.join("\n")}
               onChange={(e) => handleArrayInputChange(e, "ingredients")}
               style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
             />
@@ -106,7 +121,7 @@ const RecipePage = () => {
           <p>
             <strong>Preparation Steps: </strong>
             <textarea
-              value={recipe.steps.join(". ")}
+              value={recipe.steps.join("\n")}
               onChange={(e) => handleArrayInputChange(e, "steps")}
               style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
             />
@@ -132,6 +147,18 @@ const RecipePage = () => {
       ) : (
         <div>
           <h1>{recipe.title}</h1>
+          {recipe.image && (
+            <img
+              src={recipe.image}
+              alt={recipe.title}
+              style={{
+                width: "100%",
+                maxHeight: "300px",
+                objectFit: "cover",
+                marginBottom: "10px",
+              }}
+            />
+          )}
           <p>
             <strong>Description:</strong> {recipe.description}
           </p>

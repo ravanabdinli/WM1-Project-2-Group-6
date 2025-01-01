@@ -1,3 +1,4 @@
+// NavBar.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -23,6 +24,11 @@ const NavBar = () => {
           <li style={{ marginBottom: "15px" }}>
             <Link to="/" style={{ textDecoration: "none", color: "#fff" }}>
               Home
+            </Link>
+          </li>
+          <li style={{ marginBottom: "15px" }}>
+            <Link to="/recipes" style={{ textDecoration: "none", color: "#fff" }}>
+              Recipes
             </Link>
           </li>
           <li style={{ marginBottom: "15px" }}>
