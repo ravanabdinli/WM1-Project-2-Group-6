@@ -9,9 +9,14 @@ const RecipePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/recipes/${id}`).then((response) => {
-      setRecipe(response.data);
-    });
+    axios.get(`http://localhost:3001/recipes/${id}`)
+      .then((response) => {
+        setRecipe(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching recipe:", error);
+        alert("Recipe not found. Please try again.");
+      });
   }, [id]);
 
   const handleInputChange = (e) => {
@@ -39,10 +44,17 @@ const RecipePage = () => {
   };
 
   const handleDelete = () => {
-    axios.delete(`http://localhost:3001/recipes/${id}`).then(() => {
-      navigate("/");
-    });
+    axios
+      .delete(`http://localhost:3001/recipes/${id}`)
+      .then(() => {
+        navigate("/recipes"); // Redirect to overview after deletion
+      })
+      .catch((error) => {
+        console.error("Error deleting recipe:", error);
+        alert("An error occurred while deleting the recipe. Please try again.");
+      });
   };
+
 
   if (!recipe) return <p>Loading...</p>;
 
@@ -183,11 +195,15 @@ const RecipePage = () => {
           <h3>Tags</h3>
           <p>{recipe.tags.join(", ")}</p>
           <button
-            onClick={() => setIsEditing(true)}
+            onClick={() =>
+              navigate(`/recipe/${id}/edit`, { state: { recipe } })
+            }
             style={{ padding: "10px", marginRight: "10px" }}
           >
             Edit
           </button>
+
+
           <button
             onClick={handleDelete}
             style={{ padding: "10px", background: "red", color: "#fff" }}

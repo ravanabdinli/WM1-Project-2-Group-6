@@ -9,7 +9,7 @@ const NavBar = () => {
         {/* Left Links */}
         <div className="navbar-left">
           <Link to="/recipes" className="nav-link">
-            Recipes
+            All Recipes
           </Link>
           <Link to="/create" className="nav-link">
             Create Recipe
@@ -30,7 +30,7 @@ const NavBar = () => {
         {/* Right Links */}
         <div className="navbar-right">
           <Link to="/contact" className="nav-link">
-            Contact Me
+            Contact Us
           </Link>
           <Link to="/previous-project" className="nav-link">
             Previous Project

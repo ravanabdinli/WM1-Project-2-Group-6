@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import RecipesList from "../components/RecipesList";
+import "./RecipesOverviewPage.css"; // Add a CSS file for styling
 
 const RecipesOverviewPage = () => {
   const [recipes, setRecipes] = useState([]);
@@ -10,7 +11,7 @@ const RecipesOverviewPage = () => {
   const [sortOption, setSortOption] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const RECIPES_PER_PAGE = 10;
+  const RECIPES_PER_PAGE = 12;
 
   useEffect(() => {
     // Fetch recipes from server
@@ -89,70 +90,88 @@ const RecipesOverviewPage = () => {
     setCurrentPage(page);
   };
 
+  const handleDeleteRecipe = (recipeId) => {
+    axios
+      .delete(`http://localhost:3001/recipes/${recipeId}`)
+      .then(() => {
+        setRecipes((prevRecipes) => {
+          const updatedRecipes = prevRecipes.filter((recipe) => recipe.id !== recipeId);
+          const newTotalPages = Math.ceil(updatedRecipes.length / RECIPES_PER_PAGE);
+          // If the current page becomes invalid (e.g., no more recipes on the current page), move to the last valid page
+          if (currentPage > newTotalPages) {
+            setCurrentPage(newTotalPages);
+          }
+          return updatedRecipes;
+        });
+        alert("Recipe deleted successfully.");
+      })
+      .catch((error) => {
+        console.error("Error deleting recipe:", error);
+        alert("An error occurred while deleting the recipe. Please try again.");
+      });
+  };
+
   const paginatedRecipes = filteredRecipes.slice(
     (currentPage - 1) * RECIPES_PER_PAGE,
     currentPage * RECIPES_PER_PAGE
   );
 
   return (
-    <div>
-      <h1>Welcome to Recipe Manager</h1>
-      <p>Your go-to app for managing recipes!</p>
+    <div className="recipes-overview">
+      <div className="recipes-header">
+        <h1>🧾All Recipes🧾</h1> {/* Only this heading remains */}
+        <p>Discover delicious recipes and get cooking!</p>
+      </div>
 
-      {/* Search Input */}
-      <input
-        type="text"
-        placeholder="Search recipes..."
-        value={searchQuery}
-        onChange={handleSearch}
-        style={{ marginRight: "10px" }}
-      />
-
-      {/* Filter by Difficulty */}
-      <select
-        value={filterDifficulty}
-        onChange={handleFilterDifficulty}
-        style={{ marginRight: "10px" }}
-      >
-        <option value="">Filter by Difficulty</option>
-        <option value="Easy">Easy</option>
-        <option value="Medium">Medium</option>
-        <option value="Hard">Hard</option>
-      </select>
-
-      {/* Filter by Tags */}
-      <input
-        type="text"
-        placeholder="Filter by Tags"
-        value={filterTags}
-        onChange={handleFilterTags}
-        style={{ marginRight: "10px" }}
-      />
-
-      {/* Sort Options */}
-      <select value={sortOption} onChange={handleSort}>
-        <option value="">Sort by</option>
-        <option value="title">Title</option>
-        <option value="createTime">Create Time</option>
-        <option value="updateTime">Last Updated</option>
-        <option value="difficulty">Difficulty</option>
-      </select>
+      <div className="filters-container">
+        <input
+          type="text"
+          placeholder="Search recipes..."
+          value={searchQuery}
+          onChange={handleSearch}
+          className="filter-input"
+        />
+        <select
+          value={filterDifficulty}
+          onChange={handleFilterDifficulty}
+          className="filter-select"
+        >
+          <option value="">Filter by Difficulty</option>
+          <option value="Easy">Easy</option>
+          <option value="Medium">Medium</option>
+          <option value="Hard">Hard</option>
+        </select>
+        <input
+          type="text"
+          placeholder="Filter by Tags"
+          value={filterTags}
+          onChange={handleFilterTags}
+          className="filter-input"
+        />
+        <select
+          value={sortOption}
+          onChange={handleSort}
+          className="filter-select"
+        >
+          <option value="">Sort by</option>
+          <option value="title">Title</option>
+          <option value="createTime">Create Time</option>
+          <option value="updateTime">Last Updated</option>
+          <option value="difficulty">Difficulty</option>
+        </select>
+      </div>
 
       {/* Recipe List */}
-      <RecipesList recipes={paginatedRecipes} />
+      <RecipesList recipes={paginatedRecipes} handleDeleteRecipe={handleDeleteRecipe} />
 
       {/* Pagination */}
-      <div style={{ marginTop: "20px" }}>
+      <div className="pagination-container">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index + 1}
             onClick={() => handlePageChange(index + 1)}
-            style={{
-              margin: "0 5px",
-              padding: "5px 10px",
-              backgroundColor: index + 1 === currentPage ? "gray" : "white",
-              cursor: "pointer",
-            }}
+            className={`pagination-button ${currentPage === index + 1 ? "active" : ""
+              }`}
           >
             {index + 1}
           </button>
@@ -160,6 +179,7 @@ const RecipesOverviewPage = () => {
       </div>
     </div>
   );
+
 };
 
 export default RecipesOverviewPage;

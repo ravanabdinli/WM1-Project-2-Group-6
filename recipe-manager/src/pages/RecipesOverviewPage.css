@@ -1,0 +1,77 @@
+.recipes-overview {
+	padding: 20px;
+	max-width: 1200px;
+	margin: 100px auto 0;
+	text-align: center;
+	font-family: 'Babue Sans', sans-serif; /* Consistent font */
+  }
+  
+  .recipes-header {
+	font-family: "Bebas Neue", sans-serif;
+	color: #000; /* make entire block black */
+  }
+  .recipes-header h1 {
+	font-size: 5.5rem;
+	margin-bottom: 10px;
+  }
+  .recipes-header p{
+
+	font-size: 1.5rem;
+  }
+  
+  .filters-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+	margin-bottom: 20px;
+  }
+  
+  .filter-input,
+  .filter-select {
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	font-size: 14px;
+	width: 200px;
+  }
+  
+  .pagination-container {
+	margin-top: 20px;
+	font-family: 'Babue Sans', sans-serif; /* Use Babue Sans for pagination numbers */
+  }
+  
+  .pagination-button {
+	margin: 0 5px;
+	padding: 8px 15px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	cursor: pointer;
+	font-family: 'Babue Sans', sans-serif; /* Use Babue Sans for pagination numbers */
+	font-size: 1rem; /* Adjust font size if needed */
+	font-weight: bold; /* Bold font weight for all states */
+	background-color: #000; /* Black background for default buttons */
+	color: #fff; /* White text for default buttons */
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .pagination-button:hover {
+	transform: scale(1.1); /* Slightly enlarge the button on hover */
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add a hover effect */
+	background-color: #333; /* Slightly lighter black on hover */
+	font-weight: bold; /* Ensure bold font weight on hover */
+	color: #fff; /* Keep text white on hover */
+  }
+  
+  .pagination-button.active {
+	background-image: url('../assets/hovernavbar.jpg'); /* Background image for active button */
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: transparent; /* Ensure only the image is visible */
+	color: black; /* Text color changes to black to match the theme */
+	font-family: 'Babue Sans', sans-serif; /* Use Babue Sans for pagination numbers */
+	font-weight: bold; /* Bold font weight for active button */
+	border: 1px solid transparent; /* Optional: Remove border for active buttons */
+  }
+  

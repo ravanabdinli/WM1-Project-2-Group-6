@@ -1,34 +1,64 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "./RecipesList.css";
 
-const RecipesList = ({ recipes }) => {
+const RecipesList = ({ recipes, handleDeleteRecipe }) => {
+  const navigate = useNavigate();
+
   return (
-    <div>
-      <h2>All Recipes</h2>
-      <ul>
+    <div className="recipe-list-container">
+      <div className="recipe-grid-container">
         {recipes.length === 0 ? (
-          <p>No recipes found. Try adjusting your search or filters.</p>
+          <p className="no-recipes-message">
+            No recipes found. Try adjusting your search or filters.
+          </p>
         ) : (
           recipes.map((recipe) => (
-            <li key={recipe.id} style={{ marginBottom: "20px" }}>
-              <img
-                src={recipe.image || "default-placeholder.jpg"}
-                alt={recipe.title}
+            <div
+              key={recipe.id}
+              className="recipe-card-link"
+              onClick={() => navigate(`/recipe/${recipe.id}`)}
+            >
+              <div
+                className="recipe-card"
                 style={{
-                  width: "100px",
-                  height: "100px",
-                  marginRight: "10px",
-                  objectFit: "cover",
+                  backgroundImage: `url(${recipe.image || "default-placeholder.jpg"})`,
                 }}
-              />
-              <Link to={`/recipe/${recipe.id}`}>
-                <h3>{recipe.title}</h3>
-              </Link>
-              <p>{recipe.description}</p>
-            </li>
+              >
+                {/* Hover buttons (Edit + Delete) */}
+                <div className="card-buttons">
+                  <button
+                    className="edit-button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation(); // Prevent navigation
+                      navigate(`/recipe/${recipe.id}/edit`, { state: { recipe } });
+                    }}
+                  >
+                    ✏️
+                  </button>
+                  <button
+                    className="delete-button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation(); // Prevent navigation
+                      handleDeleteRecipe(recipe.id);
+                    }}
+                  >
+                    🗑️
+                  </button>
+                </div>
+
+                {/* Title + Description */}
+                <div className="recipe-card-content">
+                  <h3 className="recipe-card-title">{recipe.title}</h3>
+                  <p className="recipe-card-description">{recipe.description}</p>
+                </div>
+              </div>
+            </div>
           ))
         )}
-      </ul>
+      </div>
     </div>
   );
 };
